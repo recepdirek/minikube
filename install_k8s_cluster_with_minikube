@@ -1,0 +1,61 @@
+installation minikube cluster on windows: 
+
+check if you have hyper-v installed on your computer:
+
+systeminfo
+
+
+https://minikube.sigs.k8s.io/docs/start/windows/
+
+
+
+
+enable it:  with admin privilege
+
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+
+
+run with admin:
+
+minikube start --vm-driver=hyperv 
+
+
+
+config is in C:\Users\Recep Direk\.kube
+
+
+deployment application into kubernetes cluster:
+
+PS C:\windows\system32> kubectl run hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080
+kubectl run --generator=deployment/apps.v1 is DEPRECATED and will be removed in a future version. Use kubectl run --generator=run-pod/v1 or kubectl create instead.
+deployment.apps/hello-minikube created
+PS C:\windows\system32> kubectl expose deployment hello-minikube --type=NodePort
+service/hello-minikube exposed
+PS C:\windows\system32>
+
+get url : 
+
+PS C:\windows\system32> minikube service hello-minikube --url
+http://172.17.170.202:31600
+
+
+
+PS C:\windows\system32> kubectl get pods
+NAME                              READY   STATUS    RESTARTS   AGE
+hello-minikube-5688c64fd7-mfdnm   1/1     Running   0          7m4s
+PS C:\windows\system32> kubectl get nodes
+NAME       STATUS   ROLES    AGE   VERSION
+minikube   Ready    master   36m   v1.17.0
+PS C:\windows\system32> kubectl get pods,svc
+NAME                                  READY   STATUS    RESTARTS   AGE
+pod/hello-minikube-5688c64fd7-mfdnm   1/1     Running   0          7m25s
+
+NAME                     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/hello-minikube   NodePort    10.96.189.133   <none>        8080:31600/TCP   6m24s
+service/kubernetes       ClusterIP   10.96.0.1       <none>        443/TCP          36m
+
+
+
+
+
+
